@@ -11,8 +11,9 @@ public class ScaryNeighborTrigger : MonoBehaviour
     [Header("Config")]
     public string playerTag = "Player";
 
-    bool hasRun = false;
+    int hasRun = 0;                 // 0 -> primeira vez; 1 -> segunda; etc.
     DoorHandleController dhc;
+    bool wasOpen = false;           // guarda estado anterior da porta p/ detectar "acabou de abrir"
 
     void Awake()
     {
@@ -22,38 +23,54 @@ public class ScaryNeighborTrigger : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (hasRun) return;
         if (!other.CompareTag(playerTag)) return;
-        if (door == null)
-        {
-            Debug.LogWarning("[ScaryNeighborTrigger] DoorHandleController não setado.");
+        if (dhc == null) {
+            Debug.LogWarning("[ScaryNeighborTrigger] DoorHandleController não encontrado.");
             return;
         }
 
-        if (IsDoorConsideredOpen())
+        bool nowOpen = dhc.isOpen;
+
+        // dispara apenas quando a porta acabou de ficar ABERTA (transição fechada -> aberta)
+        if (nowOpen && !wasOpen)
         {
-            hasRun = true;
-            Debug.Log("[ScaryNeighborTrigger] 🎬 Evento: player no trigger e porta aberta.");
+            switch (hasRun)
+            {
+                case 0:
+                    Debug.Log("[ScaryNeighborTrigger] 🎬 Evento 0: primeira abertura.");
+                    if (neighboor) neighboor.SetActive(true);
+                    onScary?.Invoke();
+                    break;
 
-            if (neighboor) neighboor.SetActive(true); // se quiser
-            onScary?.Invoke();                         // chama eventos do Inspector
+                case 1:
+                    Debug.Log("[ScaryNeighborTrigger] 🎬 Evento 1: segunda abertura.");
+                    // TODO: coloque aqui o segundo evento (outro UnityEvent ou chamada)
+                    onScary?.Invoke();
+                    break;
 
-            // Coloque aqui o que quiser fazer:
-            // StartCoroutine(SequenciaAssustadora());
+                case 2:
+                    Debug.Log("[ScaryNeighborTrigger] 🎬 Evento 2: terceira abertura.");
+                    // TODO: terceiro evento
+                    onScary?.Invoke();
+                    break;
+
+                default:
+                    Debug.Log("[ScaryNeighborTrigger] Já executou todos os eventos.");
+                    break;
+            }
+
+            hasRun++; // 👉 incrementa SÓ quando abriu agora
         }
+
+        // atualiza o estado anterior
+        wasOpen = nowOpen;
     }
 
     void OnDrawGizmos()
-{
-    Gizmos.color = Color.red;
-    var c = GetComponent<BoxCollider>();
-    if (c)
-        Gizmos.DrawWireCube(c.bounds.center, c.bounds.size);
-}
-
-
-    bool IsDoorConsideredOpen()
     {
-        return dhc != null && dhc.isOpen; // muda se quiser usar outro critério
+        Gizmos.color = Color.cyan;
+        var c = GetComponent<BoxCollider>();
+        if (c)
+            Gizmos.DrawWireCube(c.bounds.center, c.bounds.size);
     }
 }
