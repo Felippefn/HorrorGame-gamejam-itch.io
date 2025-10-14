@@ -22,7 +22,7 @@ public class TVController : MonoBehaviour
         {
             // Se quebrou enquanto ligada, desliga
             IsOn = false;
-            Debug.Log("TV quebrou e foi desligada.");
+            print("TV quebrou e foi desligada.");
             // if (anim) anim.SetBool("On", false);
         }
     }
@@ -31,14 +31,14 @@ public class TVController : MonoBehaviour
     {
         if (on && IsBroken)
         {
-            Debug.Log("TV está quebrada e NÃO pode ligar.");
+            print("TV está quebrada e NÃO pode ligar.");
             IsOn = false;
             // if (anim) anim.SetBool("On", false);
             return;
         }
 
         IsOn = on;
-        Debug.Log("TV " + (on ? "ligada" : "desligada"));
+        print("TV " + (on ? "ligada" : "desligada"));
         // if (anim) anim.SetBool("On", on);
     }
 
@@ -46,12 +46,12 @@ public class TVController : MonoBehaviour
     {
         if (IsBroken)
         {
-            Debug.Log("TV está quebrada, não fala nada");
+            print("TV está quebrada, não fala nada");
             return;
         }
         if (!IsOn)
         {
-            Debug.Log("TV está desligada, não fala nada");
+            print("TV está desligada, não fala nada");
             return;
         }
 
@@ -60,8 +60,8 @@ public class TVController : MonoBehaviour
 
     IEnumerator PlayLines()
     {
-        Debug.Log("TV começando a falar a sequência");
+        print("TV começando a falar a sequência");
         yield return new WaitForSeconds(1f);
-        Debug.Log("TV falou a sequência");
+        print("TV falou a sequência");
     }
 }

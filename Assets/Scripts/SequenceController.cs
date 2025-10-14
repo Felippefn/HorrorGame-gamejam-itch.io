@@ -25,6 +25,11 @@ public class SequenceController : MonoBehaviour
         StartCoroutine(ServiceFlow());
     }
 
+    public void RadioMusic()
+    {
+        print("Tocando música no rádio");
+    }
+
     IEnumerator ServiceFlow()
     {
         if (!tech.gameObject.activeSelf) tech.gameObject.SetActive(true);

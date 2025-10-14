@@ -56,19 +56,19 @@ public class NPCController : MonoBehaviour
     public IEnumerator DoServiceWithPaths(WaypointPath toTV, WaypointPath toExit)
     {
         // Ir até a TV por waypoints (ou direto se não tiver)
-        Debug.Log("Técnico indo até a TV...");
+        print("Técnico indo até a TV...");
         if (toTV != null && toTV.points.Count > 0)
             yield return MoveThroughPath(toTV);
         else if (targetTV != null)
             yield return MoveTo(targetTV.position);
 
         // “Consertar”
-        Debug.Log("Técnico consertando a TV...");
+       print("Técnico consertando a TV...");
         yield return new WaitForSeconds(fixDuration);
         //OnFixed?.Invoke();
 
         // Sair por waypoints (ou direto)
-        Debug.Log("Técnico saindo...");
+        print("Técnico saindo...");
         if (toExit != null && toExit.points.Count > 0)
             yield return MoveThroughPath(toExit);
         else if (exitPoint != null)
