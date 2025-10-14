@@ -39,7 +39,7 @@ public class LookAtObjects : MonoBehaviour
 
     void Update()
     {
-        if(inReach && Input.GetButtonDown("Interact"))
+        if(inReach)
         {
             textObject.text = description.ToString();
         }

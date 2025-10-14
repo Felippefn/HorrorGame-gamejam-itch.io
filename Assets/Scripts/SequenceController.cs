@@ -11,7 +11,12 @@ public class SequenceController : MonoBehaviour
 
     bool serviceCalled;
 
-    void Start() { tv.SetPower(false); }
+    void Start() 
+    { 
+        // comece como quebrada se quiser (coerente com TV iniciar quebrada)
+        tv.SetBroken(true);
+        tv.SetPower(false); 
+    }
 
     public void CallService()
     {
@@ -22,18 +27,24 @@ public class SequenceController : MonoBehaviour
 
     IEnumerator ServiceFlow()
     {
-        // Ativa NPC se estiver desativado na cena
         if (!tech.gameObject.activeSelf) tech.gameObject.SetActive(true);
 
         bool fixedDone = false;
-        tech.OnFixed += () => fixedDone = true;
+        System.Action onFixed = () => fixedDone = true;
+        tech.OnFixed += onFixed;
 
-        // Caminho até a TV e saída
+        // Faz o serviço (anda até a TV e depois saída)
         yield return StartCoroutine(tech.DoServiceWithPaths(pathToTV, pathToExit));
 
-        if (!fixedDone) fixedDone = true;
+        // estado da TV após o técnico tentar consertar
+        tv.SetBroken(!fixedDone);
 
+        // desinscreve do evento (boa prática)
+        tech.OnFixed -= onFixed;
+
+        // Tenta ligar — SetPower vai bloquear se ainda estiver quebrada
         tv.SetPower(true);
+
         yield return new WaitForSeconds(tvGlitchDelay);
         tv.SpeakSequence();
     }
