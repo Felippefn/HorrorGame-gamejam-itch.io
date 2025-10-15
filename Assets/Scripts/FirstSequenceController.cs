@@ -10,12 +10,14 @@ public class SequenceController : MonoBehaviour
     public float tvGlitchDelay = 5f;
 
     bool serviceCalled;
+    bool fixedDone = false;
 
     void Start() 
     { 
         // comece como quebrada se quiser (coerente com TV iniciar quebrada)
         tv.SetBroken(true);
-        tv.SetPower(false); 
+        tv.SetPower(false);
+        if (tech.gameObject.activeSelf) tech.gameObject.SetActive(false);
     }
 
     public void CallService()
@@ -32,9 +34,10 @@ public class SequenceController : MonoBehaviour
 
     IEnumerator ServiceFlow()
     {
+        tech.gameObject.SetActive(true);
         if (!tech.gameObject.activeSelf) tech.gameObject.SetActive(true);
 
-        bool fixedDone = false;
+        
         System.Action onFixed = () => fixedDone = true;
         tech.OnFixed += onFixed;
 
@@ -42,15 +45,17 @@ public class SequenceController : MonoBehaviour
         yield return StartCoroutine(tech.DoServiceWithPaths(pathToTV, pathToExit));
 
         // estado da TV após o técnico tentar consertar
-        tv.SetBroken(!fixedDone);
+        print("tv arruma " + tv.IsBroken);
+        tv.SetBroken(fixedDone);
 
         // desinscreve do evento (boa prática)
         tech.OnFixed -= onFixed;
 
         // Tenta ligar — SetPower vai bloquear se ainda estiver quebrada
+        print("tv liga");
         tv.SetPower(true);
 
         yield return new WaitForSeconds(tvGlitchDelay);
-        tv.SpeakSequence();
+        //tv.SpeakSequence();
     }
 }

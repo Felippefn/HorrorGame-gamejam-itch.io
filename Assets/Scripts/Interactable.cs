@@ -3,9 +3,10 @@ using UnityEngine.Events;
 
 public class Interactable : MonoBehaviour
 {
-    [Header("Opções de interação")]
-    public string promptText = "Press E to interact"; // opcional: pode usar pra exibir na tela
-    public UnityEvent onInteract; // define o que acontece quando interagir
+    [Header("Interaction")]
+    public string customPrompt = "Press E to interact";
+
+    public UnityEvent onInteract;
 
     public void Interact()
     {

@@ -27,7 +27,7 @@ public class NPCController : MonoBehaviour
     }
 
      // Move por um caminho (waypoints)
-    public IEnumerator MoveThroughPath(WaypointPath path, float waitAtEach = 0f)
+    public IEnumerator MoveThroughPath(WaypointPath path, float waitAtEach = -1f)
     {
         if (path == null || path.points.Count == 0) yield break;
 
@@ -71,8 +71,8 @@ public class NPCController : MonoBehaviour
         print("Técnico saindo...");
         if (toExit != null && toExit.points.Count > 0)
             yield return MoveThroughPath(toExit);
-        else if (exitPoint != null)
-            yield return MoveTo(exitPoint.position);
+        // else if (exitPoint != null)
+        //     yield return MoveTo(exitPoint.position);
 
         gameObject.SetActive(false);
     }
