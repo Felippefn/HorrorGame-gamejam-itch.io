@@ -56,7 +56,7 @@ public class PlayerRaycastInteraction : MonoBehaviour
         HidePrompt();
     }
 
-    void ShowPrompt(Interactable interactable)
+    public void ShowPrompt(Interactable interactable)
     {
         if (interactText == null) return;
 
@@ -68,7 +68,7 @@ public class PlayerRaycastInteraction : MonoBehaviour
         interactText.gameObject.SetActive(true);
     }
 
-    void HidePrompt()
+    public void HidePrompt()
     {
         if (interactText != null)
             interactText.gameObject.SetActive(false);

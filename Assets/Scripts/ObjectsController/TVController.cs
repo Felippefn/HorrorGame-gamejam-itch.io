@@ -19,7 +19,6 @@ public class TVController : MonoBehaviour
         IsBroken = broken;
         if (IsBroken && IsOn)
         {
-            // Se quebrou enquanto ligada, desliga
             IsOn = false;
             print("TV quebrou e foi desligada.");
             // if (anim) anim.SetBool("On", false);
@@ -54,13 +53,28 @@ public class TVController : MonoBehaviour
             return;
         }
 
-        StartCoroutine(PlayLines());
+        StartCoroutine(PlayWarningLine());
+    }
+    public void ChangeChannel()
+    {
+        if (IsBroken)
+        {
+            print("TV está quebrada, não troca de canal");
+            return;
+        }
+        if (!IsOn)
+        {
+            print("TV está desligada, não troca de canal");
+            return;
+        }
+
+        print("Trocando de canal na TV");
     }
 
-    IEnumerator PlayLines()
+    IEnumerator PlayWarningLine()
     {
-        print("TV começando a falar a sequência");
+        print("WAIT");
         yield return new WaitForSeconds(1f);
-        print("TV falou a sequência");
+        print("DO NOT OPEN THAT DOOR");
     }
 }

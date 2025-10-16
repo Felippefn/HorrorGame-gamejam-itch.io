@@ -2,57 +2,56 @@ using UnityEngine;
 
 public class SitController : MonoBehaviour
 {
-    [Header("Referências")]
-    public GameObject playerStanding;   // jogador em pé
-    public GameObject intText;          // "Pressione E"
-    //public GameObject standText;        // "Levantar (WASD/Espaço)"
-    public Transform seatPoint;         // posição e rotação do assento
+    [Header("References")]
+    [Tooltip("Player root object (standing state)")]
+    public GameObject playerStanding;      // jogador em pé
+    [Tooltip("Seat position & rotation target")]
+    public Transform seatPoint;            // posição/rotação do assento
 
     [Header("State")]
-    public bool interactable;
     public bool sitting;
-    public bool canStandUp ;
+    public bool canStandUp = true;
 
     private PlayerMovemetController pmc;
     private Vector3 originalPosition;
     private Quaternion originalRotation;
+    private Collider playerCollider;
+
+    PlayerRaycastInteraction pRayIn;
 
     void Awake()
     {
+        if (playerStanding == null)
+        {
+            Debug.LogError("[SitController] Missing playerStanding reference.");
+            enabled = false;
+            return;
+        }
+
         pmc = playerStanding.GetComponent<PlayerMovemetController>();
-        intText.SetActive(false);
-        //standText.SetActive(false);
+        if (pmc == null)
+            Debug.LogWarning("[SitController] PlayerMovemetController not found on playerStanding.");
+
+        playerCollider = playerStanding.GetComponent<Collider>();
+        if (playerCollider == null)
+            Debug.LogWarning("[SitController] Player has no Collider component.");
+
+        if (seatPoint == null)
+        {
+            Debug.LogError("[SitController] Missing seatPoint reference.");
+            enabled = false;
+            return;
+        }
+
+        pRayIn = playerStanding.GetComponent<PlayerRaycastInteraction>();
         sitting = false;
         canStandUp = true;
-        interactable = false;
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            interactable = true;
-            if (!sitting) intText.SetActive(true);
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            interactable = false;
-            intText.SetActive(false);
-        }
     }
 
     void Update()
     {
-        if (interactable && !sitting && Input.GetKeyDown(KeyCode.E))
-        {
-            SitDown();
-        }
-
-        if (canStandUp && sitting && (
+        // permitir levantar com WASD/Space, como você já fazia
+        if (sitting && canStandUp && (
             Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) ||
             Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D) ||
             Input.GetKeyDown(KeyCode.Space)))
@@ -61,37 +60,43 @@ public class SitController : MonoBehaviour
         }
     }
 
-    void SitDown()
+    /// <summary>
+    /// Chamado pelo UnityEvent do Interactable quando o jogador aperta E.
+    /// Se não estiver sentado, senta. Se já estiver e puder levantar, levanta.
+    /// </summary>
+    public void OnInteract()
     {
-        // guarda posição original
+        if (!sitting)
+            SitDown();
+        // else if (canStandUp)
+        //     StandUp();
+    }
+
+    private void SitDown()
+    {
+        pRayIn.HidePrompt();           
+        // guarda posição/rotação atuais
         originalPosition = playerStanding.transform.position;
         originalRotation = playerStanding.transform.rotation;
 
-        // trava movimento
-        pmc.canMove = false;
-        playerStanding.GetComponent<Collider>().enabled = false;
-        // move para o ponto do sofá
+        // trava movimento + colisão
+        if (pmc != null) pmc.canMove = false;
+        if (playerCollider != null) playerCollider.enabled = false;
+
+        // move para o assento
         playerStanding.transform.SetPositionAndRotation(seatPoint.position, seatPoint.rotation);
 
-        // UI
-        intText.SetActive(false);
-        //standText.SetActive(true);
-
         sitting = true;
-        interactable = false;
     }
 
-    void StandUp()
+    private void StandUp()
     {
-        // volta para a posição anterior (ou poderia colocar um empty "ponto de pé")
+        pRayIn.ShowPrompt(this.GetComponent<Interactable>());
+        // volta para onde estava (ou use um empty exclusivo se preferir)
         playerStanding.transform.SetPositionAndRotation(originalPosition, originalRotation);
-        playerStanding.GetComponent<Collider>().enabled = true;
-        // libera movimento
-        pmc.canMove = true;
 
-        // UI
-        //standText.SetActive(false);
-        if (interactable) intText.SetActive(true);
+        if (playerCollider != null) playerCollider.enabled = true;
+        if (pmc != null) pmc.canMove = true;
 
         sitting = false;
     }

@@ -394,6 +394,12 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.5374198, y: 5.17781, z: 0.9386642}
   m_Center: {x: -0.5041822, y: 1.2245944, z: 0.35211235}
+--- !u!4 &96840036 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8240814462235223454, guid: ac34778ba81633443a327e7dc1dfbdd6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1993779602}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &175890671
 GameObject:
   m_ObjectHideFlags: 0
@@ -689,7 +695,7 @@ Transform:
   m_GameObject: {fileID: 239619511}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
-  m_LocalPosition: {x: 0, y: 0.00421, z: 0.00777}
+  m_LocalPosition: {x: 0, y: 0.0042, z: 0.00605}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -720,9 +726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStanding: {fileID: 624484709}
-  intText: {fileID: 237826380}
   seatPoint: {fileID: 239619512}
-  interactable: 0
   sitting: 0
   canStandUp: 0
 --- !u!65 &284658083
@@ -744,8 +748,36 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.020124184, y: 0.03342848, z: 0.009683954}
-  m_Center: {x: 0, y: 0.006556698, z: 0.00264031}
+  m_Size: {x: 0.018602356, y: 0.022058403, z: 0.0044397516}
+  m_Center: {x: 0.0018591982, y: 0.00087166333, z: 0.0007499135}
+--- !u!114 &284658086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284658078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ccc42f86975ed24ea71636d805f8f3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customPrompt: '[E] Sofa'
+  onInteract:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 284658082}
+        m_TargetAssemblyTypeName: SitController, Assembly-CSharp
+        m_MethodName: OnInteract
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &302299372
 GameObject:
   m_ObjectHideFlags: 0
@@ -786,7 +818,7 @@ MonoBehaviour:
   sitController: {fileID: 284658082}
   tvSpeakTrigger: {fileID: 53871762}
   door: {fileID: 873319749}
-  scaryNeighborTrigger: {fileID: 0}
+  scaryNeighborTrigger: {fileID: 1992133555}
 --- !u!4 &302299374
 Transform:
   m_ObjectHideFlags: 0
@@ -2609,7 +2641,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 30
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -6504,8 +6536,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 583513736}
-  - component: {fileID: 583513739}
-  - component: {fileID: 583513738}
   - component: {fileID: 583513737}
   - component: {fileID: 583513740}
   m_Layer: 6
@@ -6524,11 +6554,11 @@ Transform:
   m_GameObject: {fileID: 583513735}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.87, y: -0.29, z: -9.6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1109996798}
+  m_Father: {fileID: 96840036}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &583513737
 BoxCollider:
@@ -6549,58 +6579,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &583513738
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 583513735}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: cafc138fb69b18f47a92774eca3b599c, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &583513739
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 583513735}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Size: {x: 3.5552614, y: 3.1521423, z: 2.456841}
+  m_Center: {x: 0.073303804, y: -0.2658008, z: 0.2395273}
 --- !u!114 &583513740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7195,6 +7175,7 @@ MonoBehaviour:
   closeY: 0
   speed: 3
   isOpen: 0
+  canBeInteracted: 1
 --- !u!64 &873319750
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7217,6 +7198,12 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 7202019439985978107, guid: ac34778ba81633443a327e7dc1dfbdd6, type: 3}
+--- !u!4 &932947190 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8717312889043087111, guid: ac34778ba81633443a327e7dc1dfbdd6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1993779602}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &970507945 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1660303193455486822, guid: ac34778ba81633443a327e7dc1dfbdd6,
@@ -7267,6 +7254,7 @@ MonoBehaviour:
   closeY: 0
   speed: 3
   isOpen: 0
+  canBeInteracted: 1
 --- !u!64 &970507949
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7350,10 +7338,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 1.3, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1822229808}
-  - {fileID: 583513736}
-  - {fileID: 2137885135}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1122229762
@@ -8367,8 +8352,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1822229808}
-  - component: {fileID: 1822229811}
-  - component: {fileID: 1822229810}
   - component: {fileID: 1822229809}
   - component: {fileID: 1822229813}
   - component: {fileID: 1822229812}
@@ -8388,11 +8371,11 @@ Transform:
   m_GameObject: {fileID: 1822229807}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.58, y: 0.39, z: -5.58}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1109996798}
+  m_Father: {fileID: 932947190}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1822229809
 BoxCollider:
@@ -8413,58 +8396,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &1822229810
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1822229807}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: bc0cde56b10dbc441952974f09eec645, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1822229811
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1822229807}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Size: {x: 0.9999999, y: 1.1696485, z: 1}
+  m_Center: {x: 0, y: -0.08482362, z: -2.196708e-16}
 --- !u!114 &1822229812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8477,13 +8410,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ccc42f86975ed24ea71636d805f8f3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customPrompt: ' TV'
+  customPrompt: '[E] TV'
   onInteract:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1822229813}
         m_TargetAssemblyTypeName: TVController, Assembly-CSharp
-        m_MethodName: SpeakSequence
+        m_MethodName: ChangeChannel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8537,6 +8470,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 462866706}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1896202734 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8438452565263269305, guid: ac34778ba81633443a327e7dc1dfbdd6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1993779602}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1937151612
 GameObject:
   m_ObjectHideFlags: 0
@@ -8897,6 +8836,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 390091069}
+    - targetCorrespondingSourceObject: {fileID: 8438452565263269305, guid: ac34778ba81633443a327e7dc1dfbdd6,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2137885135}
+    - targetCorrespondingSourceObject: {fileID: 8240814462235223454, guid: ac34778ba81633443a327e7dc1dfbdd6,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 583513736}
     - targetCorrespondingSourceObject: {fileID: 1960791562882980168, guid: ac34778ba81633443a327e7dc1dfbdd6,
         type: 3}
       insertIndex: -1
@@ -8905,6 +8852,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 53871761}
+    - targetCorrespondingSourceObject: {fileID: 8717312889043087111, guid: ac34778ba81633443a327e7dc1dfbdd6,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1822229808}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: -81444722679594645, guid: ac34778ba81633443a327e7dc1dfbdd6,
         type: 3}
@@ -8938,6 +8889,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 284658083}
+    - targetCorrespondingSourceObject: {fileID: 4187242856556416271, guid: ac34778ba81633443a327e7dc1dfbdd6,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 284658086}
   m_SourcePrefab: {fileID: 100100000, guid: ac34778ba81633443a327e7dc1dfbdd6, type: 3}
 --- !u!1 &2013702512
 GameObject:
@@ -9217,8 +9172,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2137885135}
-  - component: {fileID: 2137885138}
-  - component: {fileID: 2137885137}
   - component: {fileID: 2137885136}
   - component: {fileID: 2137885139}
   m_Layer: 6
@@ -9237,11 +9190,11 @@ Transform:
   m_GameObject: {fileID: 2137885134}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.4, y: -0.13, z: -3.95}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1109996798}
+  m_Father: {fileID: 1896202734}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2137885136
 BoxCollider:
@@ -9262,58 +9215,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &2137885137
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2137885134}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: d60f3bc56295aaa4d832b3b7a57a20c7, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &2137885138
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2137885134}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Size: {x: 0.35923052, y: 0.1944645, z: 0.19730312}
+  m_Center: {x: -0.00982558, y: -0.0047795926, z: 0.0290661}
 --- !u!114 &2137885139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9326,7 +9229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ccc42f86975ed24ea71636d805f8f3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customPrompt: Radio
+  customPrompt: '[E] Radio'
   onInteract:
     m_PersistentCalls:
       m_Calls:

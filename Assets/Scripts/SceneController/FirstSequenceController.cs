@@ -32,7 +32,8 @@ public class FirstSequenceController : MonoBehaviour
     void Awake()
     {
         scaryNeighborTrigger.enabled = false;
-        sitController.enabled = false;
+        //sitController.enabled = false;
+        door.canBeInteracted = false;
     }
 
     void Start()
@@ -56,15 +57,20 @@ public class FirstSequenceController : MonoBehaviour
 
     IEnumerator ServiceFlow()
     {
+        
         tech.gameObject.SetActive(true);
         if (!tech.gameObject.activeSelf) tech.gameObject.SetActive(true);
 
         System.Action onFixed = () => fixedDone = true;
         tech.OnFixed += onFixed;
-
+        yield return new WaitForSeconds(4f);
         door.isOpen = true;
         yield return StartCoroutine(tech.DoServiceWithPaths(pathToTV, pathToExit));
         door.isOpen = false;
+
+        door.canBeInteracted = false;
+
+        //yield return new WaitUntil(() => fixedDone);
         print("tv arruma " + tv.IsBroken);
         tv.SetBroken(fixedDone);
 
