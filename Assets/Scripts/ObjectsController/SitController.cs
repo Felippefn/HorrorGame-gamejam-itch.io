@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SitSofa : MonoBehaviour
+public class SitController : MonoBehaviour
 {
     [Header("Referências")]
     public GameObject playerStanding;   // jogador em pé
@@ -8,9 +8,10 @@ public class SitSofa : MonoBehaviour
     //public GameObject standText;        // "Levantar (WASD/Espaço)"
     public Transform seatPoint;         // posição e rotação do assento
 
-    [Header("Estado")]
+    [Header("State")]
     public bool interactable;
     public bool sitting;
+    public bool canStandUp ;
 
     private PlayerMovemetController pmc;
     private Vector3 originalPosition;
@@ -22,6 +23,7 @@ public class SitSofa : MonoBehaviour
         intText.SetActive(false);
         //standText.SetActive(false);
         sitting = false;
+        canStandUp = true;
         interactable = false;
     }
 
@@ -45,14 +47,12 @@ public class SitSofa : MonoBehaviour
 
     void Update()
     {
-        // sentar
         if (interactable && !sitting && Input.GetKeyDown(KeyCode.E))
         {
             SitDown();
         }
 
-        // levantar
-        if (sitting && (
+        if (canStandUp && sitting && (
             Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) ||
             Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D) ||
             Input.GetKeyDown(KeyCode.Space)))

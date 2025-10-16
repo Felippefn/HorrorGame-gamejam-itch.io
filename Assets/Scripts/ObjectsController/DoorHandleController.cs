@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class DoorHandleController : MonoBehaviour
 {
-    public float openY = 90f;   // rotação da porta aberta
-    public float closeY = 0f;   // rotação da porta fechada
-    public float speed = 3f;    // velocidade de rotação
-    public bool isOpen = false; // estado atual
+    public float openY = 90f;   
+    public float closeY = 0f;   
+    public float speed = 3f;    
+    public bool isOpen = false; 
 
     void Update()
     {

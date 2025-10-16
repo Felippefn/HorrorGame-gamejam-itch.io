@@ -1,20 +1,42 @@
 using UnityEngine;
 using System.Collections;
 
-public class SequenceController : MonoBehaviour
+public class FirstSequenceController : MonoBehaviour
 {
+
+    [Header("References Stage 1")]
     public TVController tv;
     public NPCController tech;
     public WaypointPath pathToTV;
     public WaypointPath pathToExit;
     public float tvGlitchDelay = 5f;
 
-    bool serviceCalled;
-    bool fixedDone = false;
+    private bool serviceCalled;
+    private bool fixedDone;
 
-    void Start() 
+
+    [Header("References Stage 1.1")]
+    public SitController sitController;
+    public BoxCollider tvSpeakTrigger;
+    public DoorHandleController door;
+
+
+    [Header("References Stage 2")]
+    public ScaryNeighborTrigger scaryNeighborTrigger;
+
+    
+    [Header("Stage Behavior")]
+    private bool _stageSequenceDone;
+
+
+    void Awake()
+    {
+        scaryNeighborTrigger.enabled = false;
+        sitController.enabled = false;
+    }
+
+    void Start()
     { 
-        // comece como quebrada se quiser (coerente com TV iniciar quebrada)
         tv.SetBroken(true);
         tv.SetPower(false);
         if (tech.gameObject.activeSelf) tech.gameObject.SetActive(false);
@@ -37,25 +59,36 @@ public class SequenceController : MonoBehaviour
         tech.gameObject.SetActive(true);
         if (!tech.gameObject.activeSelf) tech.gameObject.SetActive(true);
 
-        
         System.Action onFixed = () => fixedDone = true;
         tech.OnFixed += onFixed;
 
-        // Faz o serviço (anda até a TV e depois saída)
+        door.isOpen = true;
         yield return StartCoroutine(tech.DoServiceWithPaths(pathToTV, pathToExit));
-
-        // estado da TV após o técnico tentar consertar
+        door.isOpen = false;
         print("tv arruma " + tv.IsBroken);
         tv.SetBroken(fixedDone);
 
-        // desinscreve do evento (boa prática)
         tech.OnFixed -= onFixed;
 
-        // Tenta ligar — SetPower vai bloquear se ainda estiver quebrada
         print("tv liga");
         tv.SetPower(true);
 
         yield return new WaitForSeconds(tvGlitchDelay);
-        //tv.SpeakSequence();
+        // tv.SpeakSequence();
+    }
+
+    IEnumerator SitDownAndWait()
+    {
+        yield return new WaitForSeconds(5f);
+
+        // tv.SpeakSequence();
+    }
+
+    
+    public bool StageSequenceDone => _stageSequenceDone;
+
+    public void SetStageSequenceDone()
+    {
+        _stageSequenceDone = true;
     }
 }

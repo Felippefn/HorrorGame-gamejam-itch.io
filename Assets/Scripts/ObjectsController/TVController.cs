@@ -9,12 +9,11 @@ public class TVController : MonoBehaviour
     public float delayBetweenLines = 1.2f;
 
     // Propriedade correta
-    public bool IsBroken { get; private set; } = true; // começa quebrada? ajuste se quiser
+    public bool IsBroken { get; private set; } = true; 
 
-    // Opcional: estado de ligada/desligada (se precisar)
+
     public bool IsOn { get; private set; }
 
-    // Método para alterar estado de quebrada
     public void SetBroken(bool broken)
     {
         IsBroken = broken;
