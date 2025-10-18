@@ -351,6 +351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 53871761}
   - component: {fileID: 53871762}
+  - component: {fileID: 53871763}
   m_Layer: 0
   m_Name: tvSpeakTrigger
   m_TagString: Untagged
@@ -394,6 +395,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.5374198, y: 5.17781, z: 0.9386642}
   m_Center: {x: -0.5041822, y: 1.2245944, z: 0.35211235}
+--- !u!114 &53871763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 53871760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e57a636803d2b43825fac121afca1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInTrigger: 0
 --- !u!4 &96840036 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8240814462235223454, guid: ac34778ba81633443a327e7dc1dfbdd6,
@@ -816,8 +830,8 @@ MonoBehaviour:
   pathToExit: {fileID: 462866705}
   tvGlitchDelay: 5
   sitController: {fileID: 284658082}
-  tvSpeakTrigger: {fileID: 53871762}
   door: {fileID: 873319749}
+  tvCollider: {fileID: 0}
   scaryNeighborTrigger: {fileID: 1992133555}
 --- !u!4 &302299374
 Transform:
@@ -7309,37 +7323,6 @@ Transform:
   - {fileID: 175890675}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!1 &1109996797
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1109996798}
-  m_Layer: 0
-  m_Name: objPlaceHolder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1109996798
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1109996797}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.3, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1122229762
 GameObject:
   m_ObjectHideFlags: 0
@@ -9602,7 +9585,6 @@ SceneRoots:
   - {fileID: 378518229}
   - {fileID: 1263646043}
   - {fileID: 1073723872}
-  - {fileID: 1109996798}
   - {fileID: 2013702513}
   - {fileID: 1992133556}
   - {fileID: 1127923119}

@@ -17,16 +17,18 @@ public class FirstSequenceController : MonoBehaviour
 
     [Header("References Stage 1.1")]
     public SitController sitController;
-    public BoxCollider tvSpeakTrigger;
+    //public BoxCollider tvSpeakTrigger;
     public DoorHandleController door;
+    public TVSpeakCollider tvCollider;
 
 
     [Header("References Stage 2")]
     public ScaryNeighborTrigger scaryNeighborTrigger;
 
-    
+
     [Header("Stage Behavior")]
     private bool _stageSequenceDone;
+    private bool _firstStageDone;
 
 
     void Awake()
@@ -34,6 +36,8 @@ public class FirstSequenceController : MonoBehaviour
         scaryNeighborTrigger.enabled = false;
         //sitController.enabled = false;
         door.canBeInteracted = false;
+        _firstStageDone = false;
+        _stageSequenceDone = false;
     }
 
     void Start()
@@ -53,6 +57,16 @@ public class FirstSequenceController : MonoBehaviour
     public void RadioMusic()
     {
         print("Tocando música no rádio");
+    }
+
+    public void TVSpeakIfPlayerInTrigger()
+    {
+        if (tvCollider.playerInTrigger && tv.IsOn && !tv.IsBroken)
+        {
+            print("Player esta sendado, tv ligada e não quebrada");
+            print("Player está no trigger da TV");
+            tv.SpeakSequence();
+        }
     }
 
     IEnumerator ServiceFlow()
@@ -80,12 +94,22 @@ public class FirstSequenceController : MonoBehaviour
         tv.SetPower(true);
 
         yield return new WaitForSeconds(tvGlitchDelay);
+        print("first phase is done");
+        _firstStageDone = true;
         // tv.SpeakSequence();
     }
 
     IEnumerator SitDownAndWait()
     {
         yield return new WaitForSeconds(5f);
+
+        //Knock knock
+        print("Bate na porta");
+        yield return new WaitForSeconds(2f);
+
+        //Knock knock knock
+        print("Bate mais forte na porta");
+        yield return new WaitForSeconds(2f);
 
         // tv.SpeakSequence();
     }
