@@ -9,6 +9,7 @@ public class DoorHandleController : MonoBehaviour
     public float speed = 3f;
     public bool isOpen = false;
     public bool canBeInteracted = true;
+    public bool playerInteracted = false;
     public TextMeshProUGUI doNotTextMesh;
 
     void Update()
@@ -22,6 +23,9 @@ public class DoorHandleController : MonoBehaviour
 
     public void ToggleDoor()
     {
+        print("Tentou interagir com a porta");
+        playerInteracted = true;
+        print("player interacted : " + playerInteracted);
         if (canBeInteracted)
         {
             isOpen = !isOpen;
@@ -30,6 +34,8 @@ public class DoorHandleController : MonoBehaviour
         {
             StartCoroutine(ShowDoNotText());
         }
+        playerInteracted = false;
+        print("player interacted : " + playerInteracted);
     }
 
     IEnumerator ShowDoNotText()

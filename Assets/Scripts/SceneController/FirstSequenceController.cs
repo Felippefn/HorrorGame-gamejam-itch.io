@@ -16,6 +16,11 @@ public class FirstSequenceController : MonoBehaviour
 
 
     [Header("References Stage 1.1")]
+
+    public AudioSource knockSource;
+    public AudioSource knockSource2;
+    public AudioSource knockSource3;
+
     public SitController sitController;
     //public BoxCollider tvSpeakTrigger;
     public DoorHandleController door;
@@ -23,6 +28,8 @@ public class FirstSequenceController : MonoBehaviour
     private bool _sitStarted;
     private bool _readyToSpeak;
     private bool _tvSpeakDone;
+
+
 
 
     [Header("References Stage 2")]
@@ -137,11 +144,24 @@ void Update()
 
         //Knock knock
         print("Bate na porta");
+        knockSource.PlayOneShot(knockSource.clip);
         yield return new WaitForSeconds(2f);
 
         //Knock knock knock
         print("Bate mais forte na porta");
+        knockSource2.PlayOneShot(knockSource2.clip);
         yield return new WaitForSeconds(2f);
+
+        print("Bate mais super forte na porta");
+        knockSource3.PlayOneShot(knockSource3.clip);
+        yield return new WaitForSeconds(2f);
+
+        if (door.playerInteracted)
+        {
+            print("Jogador interagiu com a porta, susto");
+            yield break;
+        }
+        print("Ninguém atendeu, susto");
 
         // tv.SpeakSequence();
     }
