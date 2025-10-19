@@ -10,7 +10,7 @@ public class TVSpeakCollider : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            print("player is in tv speak trigger");
+            //print("player is in tv speak trigger");
             playerInTrigger = true;
         }
     }
@@ -19,7 +19,7 @@ public class TVSpeakCollider : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            print("player left tv speak trigger");
+            //print("player left tv speak trigger");
             playerInTrigger = false;
         }
     }

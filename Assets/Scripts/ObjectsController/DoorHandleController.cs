@@ -1,3 +1,5 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class DoorHandleController : MonoBehaviour
@@ -5,8 +7,9 @@ public class DoorHandleController : MonoBehaviour
     public float openY = 90f;   
     public float closeY = 0f;   
     public float speed = 3f;
-    public bool isOpen = false; 
+    public bool isOpen = false;
     public bool canBeInteracted = true;
+    public TextMeshProUGUI doNotTextMesh;
 
     void Update()
     {
@@ -25,7 +28,17 @@ public class DoorHandleController : MonoBehaviour
         }
         else
         {
-            print("I shouldn't be able to open the door now.");
+            StartCoroutine(ShowDoNotText());
+        }
+    }
+
+    IEnumerator ShowDoNotText()
+    {
+        if (doNotTextMesh != null)
+        {
+            doNotTextMesh.gameObject.SetActive(true);
+            yield return new WaitForSeconds(2f);
+            doNotTextMesh.gameObject.SetActive(false);
         }
     }
 }

@@ -20,6 +20,9 @@ public class FirstSequenceController : MonoBehaviour
     //public BoxCollider tvSpeakTrigger;
     public DoorHandleController door;
     public TVSpeakCollider tvCollider;
+    private bool _sitStarted;
+    private bool _readyToSpeak;
+    private bool _tvSpeakDone;
 
 
     [Header("References Stage 2")]
@@ -45,6 +48,35 @@ public class FirstSequenceController : MonoBehaviour
         tv.SetBroken(true);
         tv.SetPower(false);
         if (tech.gameObject.activeSelf) tech.gameObject.SetActive(false);
+    }
+
+    // ADIÇÃO: Update com polling leve e barato (só booleans)
+void Update()
+{
+    // 1) Quando o serviço acabou e o player sentou, dispara a espera uma única vez
+    if (_firstStageDone && !_sitStarted && sitController != null && sitController.sitting)
+    {
+        _sitStarted = true;
+        StartCoroutine(SitDownAndWaitWrapper());
+    }
+
+    // 2) Depois da espera, libera a TV pra falar quando o player encostar no trigger
+    if (_readyToSpeak && !_tvSpeakDone)
+    {
+        // Reaproveita sua própria checagem (IsOn + !IsBroken + playerInTrigger)
+        TVSpeakIfPlayerInTrigger();
+
+        // Se as condições já estão válidas nesse frame, marcamos como concluído
+        if (tvCollider != null && tvCollider.playerInTrigger && tv.IsOn && !tv.IsBroken)
+        {
+            _tvSpeakDone = true; // evita múltiplas execuções
+        }
+    }
+}
+    IEnumerator SitDownAndWaitWrapper()
+    {
+        yield return StartCoroutine(SitDownAndWait());
+        _readyToSpeak = true;
     }
 
     public void CallService()
