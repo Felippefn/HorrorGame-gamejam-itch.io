@@ -22,14 +22,60 @@ public class TVController : MonoBehaviour
 
     public bool IsOn { get; private set; }
 
-    public bool _SpokeWarningLine { get; private set;} = false;
+    public bool _SpokeWarningLine { get; private set; } = false;
+
+    public FirstSequenceController firstSequenceController;
+
+    [Header("Dialog References / UI")]
+    public TextMeshProUGUI WaitDialog;
+    public AudioSource WaitAudioSource;
+
+
+    public TextMeshProUGUI DoNotOpenDialog;
+    public AudioSource DoNotAudioSource;
+
+
+    public TextMeshProUGUI TimeToExplainDialog;
+    public AudioSource TimeToExplainAudioSource;
+
+
+    public TextMeshProUGUI CheckBathroomDialog;
+    public AudioSource CheckBathroomAudioSource;
 
 
     void Awake()
     {
         powerIndicatorUI.gameObject.SetActive(false);
         brokenIndicatorUI.gameObject.SetActive(false);
+
+        if (WaitDialog)
+            WaitDialog.gameObject.SetActive(false);
+        if (DoNotOpenDialog)
+            DoNotOpenDialog.gameObject.SetActive(false);
+        if (TimeToExplainDialog)
+            TimeToExplainDialog.gameObject.SetActive(false);
+        if (CheckBathroomDialog)
+            CheckBathroomDialog.gameObject.SetActive(false);
     }
+
+    IEnumerator StartDialog(TextMeshProUGUI textMesh)
+    {
+        textMesh.gameObject.SetActive(true);
+        textMesh.text = textMesh.text.Trim(); // garante texto limpo
+
+        string fullText = textMesh.text;
+        textMesh.text = "";
+
+        foreach (char c in fullText)
+        {
+            textMesh.text += c;
+            yield return new WaitForSeconds(0.05f); // velocidade da digitação
+        }
+
+        yield return new WaitForSeconds(2f); // tempo de exibição
+        textMesh.gameObject.SetActive(false);
+    }
+
 
     public void SetBroken(bool broken)
     {
@@ -89,9 +135,15 @@ public class TVController : MonoBehaviour
 
     IEnumerator PlayWarningLine()
     {
-        print("WAIT");
+        StartCoroutine(StartDialog(WaitDialog));
         yield return new WaitForSeconds(1f);
-        print("DO NOT OPEN THAT DOOR");
+        StartCoroutine(StartDialog(DoNotOpenDialog));
+        yield return new WaitForSeconds(1f);
+        firstSequenceController.WrapperStartDialog(firstSequenceController.playerQuestioningTV);
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(StartDialog(TimeToExplainDialog));
+
+
         SetSpokenWarningLine(true);
     }
 

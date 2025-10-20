@@ -1,9 +1,17 @@
 using UnityEngine;
 using System.Collections;
 using TMPro;
+using System.Collections.Generic;
 
 public class FirstSequenceController : MonoBehaviour
 {
+
+    [Header("References Stage 0 / UI")]
+    public TextMeshProUGUI playerWantsTV;
+    public TextMeshProUGUI playerWantsSofa;
+    public TextMeshProUGUI playerWhosAtTheDoor;
+    public TextMeshProUGUI playerQuestioningTV;
+
 
     [Header("References Stage 1")]
     public TVController tv;
@@ -11,7 +19,8 @@ public class FirstSequenceController : MonoBehaviour
     public WaypointPath pathToTV;
     public WaypointPath pathToExit;
     public float tvGlitchDelay = 5f;
-
+    public List<AudioSource> radioSources;
+    private int lastIndex = -1;
     private bool serviceCalled;
     private bool fixedDone;
 
@@ -49,18 +58,49 @@ public class FirstSequenceController : MonoBehaviour
 
     void Awake()
     {
+        if (playerWantsTV) playerWantsTV.gameObject.SetActive(false);
+        if (playerWantsSofa) playerWantsSofa.gameObject.SetActive(false);
+        if (playerWhosAtTheDoor) playerWhosAtTheDoor.gameObject.SetActive(false);
+        if (playerQuestioningTV) playerQuestioningTV.gameObject.SetActive(false);
+
         scaryNeighborTrigger.enabled = false;
-        //sitController.enabled = false;
+
         door.canBeInteracted = false;
         _firstStageDone = false;
         _stageSequenceDone = false;
     }
+
+    public void WrapperStartDialog(TextMeshProUGUI textMesh)
+    {
+        StartCoroutine(StartDialog(textMesh));
+    }
+
+    IEnumerator StartDialog(TextMeshProUGUI textMesh)
+    {
+        textMesh.gameObject.SetActive(true);
+        textMesh.text = textMesh.text.Trim(); // garante texto limpo
+
+        string fullText = textMesh.text;
+        textMesh.text = "";
+
+        foreach (char c in fullText)
+        {
+            textMesh.text += c;
+            yield return new WaitForSeconds(0.05f); // velocidade da digitação
+        }
+
+        yield return new WaitForSeconds(2f); // tempo de exibição
+        textMesh.gameObject.SetActive(false);
+    }
+
 
     void Start()
     { 
         tv.SetBroken(true);
         tv.SetPower(false);
         if (tech.gameObject.activeSelf) tech.gameObject.SetActive(false);
+
+        StartCoroutine(StartDialog(playerWantsTV));
     }
 
     // ADIÇÃO: Update com polling leve e barato (só booleans)
@@ -91,7 +131,10 @@ void Update()
 
     public void CallService()
     {
-        if (serviceCalled) StartCoroutine(ShowDoNotText());
+        if (serviceCalled){
+            StartCoroutine(ShowDoNotText());
+            return;
+        };
         serviceCalled = true;
         StartCoroutine(ServiceFlow());
     }
@@ -108,7 +151,33 @@ void Update()
 
     public void RadioMusic()
     {
-        print("Tocando música no rádio");
+        {
+        if (radioSources == null || radioSources.Count == 0)
+        {
+            Debug.LogWarning("Nenhum AudioSource atribuído em radioSources!");
+            return;
+        }
+
+        // escolhe um índice diferente do último
+        int newIndex;
+        do
+        {
+            newIndex = Random.Range(0, radioSources.Count);
+        } while (radioSources.Count > 1 && newIndex == lastIndex);
+
+        lastIndex = newIndex;
+
+        // para todos os sons anteriores (se quiser garantir que só um toca)
+        foreach (var src in radioSources)
+        {
+            if (src.isPlaying) src.Stop();
+        }
+
+        // toca o novo som
+        var chosen = radioSources[newIndex];
+        Debug.Log($"Tocando música {chosen.clip.name}");
+        chosen.Play();
+    }
     }
 
     public void TVSpeakIfPlayerInTrigger()
@@ -173,8 +242,8 @@ void Update()
         tech.OnFixed -= onFixed;
 
         tv.SetPower(true);
-
-        yield return new WaitForSeconds(tvGlitchDelay);
+        StartCoroutine(StartDialog(playerWantsSofa));
+        yield return new WaitForSeconds(4f);
         print("first phase is done");
         _firstStageDone = true;
         // tv.SpeakSequence();
@@ -193,12 +262,12 @@ void Update()
 
     IEnumerator KnockLoop()
     {
-        // Enquanto o player estiver sentado e a TV ainda não falou (ou não foi forçada)
         while (sitController != null && sitController.sitting && !_tvSpeakDone && !_speakForced)
         {
             if (door != null && door.playerInteracted) break;
             // Knock 1
             if (knockSource && knockSource.clip) knockSource.PlayOneShot(knockSource.clip);
+            StartCoroutine(StartDialog(playerWhosAtTheDoor));
             yield return new WaitForSeconds(2f);
 
             // Knock 2 (mais forte)
