@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using TMPro;
 
 public class FirstSequenceController : MonoBehaviour
 {
@@ -37,6 +38,7 @@ public class FirstSequenceController : MonoBehaviour
 
 
     [Header("References Stage 2")]
+    public TextMeshProUGUI phoneNotWorking;
     public ScaryNeighborTrigger scaryNeighborTrigger;
 
 
@@ -89,9 +91,19 @@ void Update()
 
     public void CallService()
     {
-        if (serviceCalled) return;
+        if (serviceCalled) StartCoroutine(ShowDoNotText());
         serviceCalled = true;
         StartCoroutine(ServiceFlow());
+    }
+
+    IEnumerator ShowDoNotText()
+    {
+        if (phoneNotWorking != null)
+        {
+            phoneNotWorking.gameObject.SetActive(true);
+            yield return new WaitForSeconds(2f);
+            phoneNotWorking.gameObject.SetActive(false);
+        }
     }
 
     public void RadioMusic()
@@ -126,6 +138,9 @@ void Update()
         // Se já existe uma espera de fala, não duplique
         if (_speakWhenReady == null)
             _speakWhenReady = StartCoroutine(SpeakWhenReady());
+
+        print("StageSequence is done");
+        SetStageSequenceDone();
     }
 
     IEnumerator SpeakWhenReady()
