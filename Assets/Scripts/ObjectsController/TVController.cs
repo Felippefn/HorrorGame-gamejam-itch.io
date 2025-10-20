@@ -10,8 +10,8 @@ public class TVController : MonoBehaviour
     // public AudioClip[] lines;
 
     [Header("TV UI Indicators")]
-    //public TextMeshProUGUI powerIndicatorUI;
-    //public TextMeshProUGUI brokenIndicatorUI;
+    public TextMeshProUGUI powerIndicatorUI;
+    public TextMeshProUGUI brokenIndicatorUI;
     
 
     public float delayBetweenLines = 1.2f;
@@ -25,10 +25,11 @@ public class TVController : MonoBehaviour
     public bool _SpokeWarningLine { get; private set;} = false;
 
 
-    // void Awake()
-    // {
-    //     powerIndicatorUI.gameObject.SetActive(false);
-    // }
+    void Awake()
+    {
+        powerIndicatorUI.gameObject.SetActive(false);
+        brokenIndicatorUI.gameObject.SetActive(false);
+    }
 
     public void SetBroken(bool broken)
     {
@@ -36,7 +37,7 @@ public class TVController : MonoBehaviour
         if (IsBroken && IsOn)
         {
             IsOn = false;
-            //StartCoroutine(ShowBrokenMessageIndicator());
+            StartCoroutine(ShowBrokenMessageIndicator());
             // if (anim) anim.SetBool("On", false);
         }
     }
@@ -45,7 +46,7 @@ public class TVController : MonoBehaviour
     {
         if (on && IsBroken)
         {
-            //StartCoroutine(ShowBrokenMessageIndicator());
+            StartCoroutine(ShowBrokenMessageIndicator());
             IsOn = false;
             // if (anim) anim.SetBool("On", false);
             return;
@@ -63,29 +64,18 @@ public class TVController : MonoBehaviour
 
     public void SpeakSequence()
     {
-        if (IsBroken)
-        {
-            //StartCoroutine(ShowPowerMessageIndicator());
-            return;
-        }
-        if (!IsOn)
-        {
-            //StartCoroutine(ShowPowerMessageIndicator());
-            return;
-        }
-
         StartCoroutine(PlayWarningLine());
     }
     public void InteractionTV()
     {
         if (IsBroken)
         {
-            //StartCoroutine(ShowPowerMessageIndicator());
+            StartCoroutine(ShowBrokenMessageIndicator());
             return;
         }
         if (!IsOn)
         {
-            //StartCoroutine(ShowPowerMessageIndicator());
+            StartCoroutine(ShowPowerMessageIndicator());
             return;
         }
         if (_SpokeWarningLine)
@@ -99,23 +89,23 @@ public class TVController : MonoBehaviour
 
     IEnumerator PlayWarningLine()
     {
-        SetSpokenWarningLine(true);
         print("WAIT");
         yield return new WaitForSeconds(1f);
         print("DO NOT OPEN THAT DOOR");
+        SetSpokenWarningLine(true);
     }
 
-    // IEnumerator ShowPowerMessageIndicator()
-    // {
-    //     powerIndicatorUI.gameObject.SetActive(true);
-    //     yield return new WaitForSeconds(2f);
-    //     powerIndicatorUI.gameObject.SetActive(false);
-    // }
-    // IEnumerator ShowBrokenMessageIndicator()
-    // {
-    //     brokenIndicatorUI.gameObject.SetActive(true);
-    //     yield return new WaitForSeconds(2f);
-    //     brokenIndicatorUI.gameObject.SetActive(false);
-    // }
+    IEnumerator ShowPowerMessageIndicator()
+    {
+        powerIndicatorUI.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        powerIndicatorUI.gameObject.SetActive(false);
+    }
+    IEnumerator ShowBrokenMessageIndicator()
+    {
+        brokenIndicatorUI.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        brokenIndicatorUI.gameObject.SetActive(false);
+    }
 
 }

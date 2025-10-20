@@ -28,6 +28,10 @@ public class FirstSequenceController : MonoBehaviour
     private bool _sitStarted;
     private bool _readyToSpeak;
     private bool _tvSpeakDone;
+    private bool _speakForced;
+    private Coroutine _knockLoop;
+    private Coroutine _speakWhenReady;
+
 
 
 
@@ -66,11 +70,8 @@ void Update()
         _sitStarted = true;
         StartCoroutine(SitDownAndWaitWrapper());
     }
-
-    // 2) Depois da espera, libera a TV pra falar quando o player encostar no trigger
     if (_readyToSpeak && !_tvSpeakDone)
     {
-        // Reaproveita sua própria checagem (IsOn + !IsBroken + playerInTrigger)
         TVSpeakIfPlayerInTrigger();
 
         // Se as condições já estão válidas nesse frame, marcamos como concluído
@@ -100,13 +101,43 @@ void Update()
 
     public void TVSpeakIfPlayerInTrigger()
     {
-        if (tvCollider.playerInTrigger && tv.IsOn && !tv.IsBroken)
+        if (_tvSpeakDone) return;
+
+        if (tvCollider != null && tvCollider.playerInTrigger)
         {
-            print("Player esta sendado, tv ligada e não quebrada");
-            print("Player está no trigger da TV");
-            tv.SpeakSequence();
+            // Força a fala assim que as condições da TV permitirem
+            ForceSpeakNow();
         }
     }
+
+    // Chame isso para "furar fila" e fazer a TV falar assim que puder
+    void ForceSpeakNow()
+    {
+        if (_tvSpeakDone) return;
+        _speakForced = true;
+
+        // Para o loop de batidas, se estiver tocando
+        if (_knockLoop != null)
+        {
+            StopCoroutine(_knockLoop);
+            _knockLoop = null;
+        }
+
+        // Se já existe uma espera de fala, não duplique
+        if (_speakWhenReady == null)
+            _speakWhenReady = StartCoroutine(SpeakWhenReady());
+    }
+
+    IEnumerator SpeakWhenReady()
+    {
+        // Espera até a TV estar ligada e não quebrada
+        yield return new WaitUntil(() => tv != null && tv.IsOn && !tv.IsBroken);
+
+        tv.SpeakSequence();
+        _tvSpeakDone = true;
+        _speakWhenReady = null;
+    }
+
 
     IEnumerator ServiceFlow()
     {
@@ -117,19 +148,15 @@ void Update()
         System.Action onFixed = () => fixedDone = true;
         tech.OnFixed += onFixed;
         yield return new WaitForSeconds(4f);
-        door.isOpen = true;
+        tv.SetBroken(fixedDone);
         yield return StartCoroutine(tech.DoServiceWithPaths(pathToTV, pathToExit));
-        door.isOpen = false;
-
         door.canBeInteracted = false;
 
         //yield return new WaitUntil(() => fixedDone);
-        print("tv arruma " + tv.IsBroken);
-        tv.SetBroken(fixedDone);
+        //tv.SetBroken(fixedDone);
 
         tech.OnFixed -= onFixed;
 
-        print("tv liga");
         tv.SetPower(true);
 
         yield return new WaitForSeconds(tvGlitchDelay);
@@ -140,30 +167,41 @@ void Update()
 
     IEnumerator SitDownAndWait()
     {
+        // Pequena espera antes de começar a incomodar
         yield return new WaitForSeconds(5f);
 
-        //Knock knock
-        print("Bate na porta");
-        knockSource.PlayOneShot(knockSource.clip);
-        yield return new WaitForSeconds(2f);
+        // Inicia o loop de batidas (se já não estiver rodando)
+        if (_knockLoop == null)
+            _knockLoop = StartCoroutine(KnockLoop());
 
-        //Knock knock knock
-        print("Bate mais forte na porta");
-        knockSource2.PlayOneShot(knockSource2.clip);
-        yield return new WaitForSeconds(2f);
+    }
 
-        print("Bate mais super forte na porta");
-        knockSource3.PlayOneShot(knockSource3.clip);
-        yield return new WaitForSeconds(2f);
-
-        if (door.playerInteracted)
+    IEnumerator KnockLoop()
+    {
+        // Enquanto o player estiver sentado e a TV ainda não falou (ou não foi forçada)
+        while (sitController != null && sitController.sitting && !_tvSpeakDone && !_speakForced)
         {
-            print("Jogador interagiu com a porta, susto");
-            yield break;
-        }
-        print("Ninguém atendeu, susto");
+            if (door != null && door.playerInteracted) break;
+            // Knock 1
+            if (knockSource && knockSource.clip) knockSource.PlayOneShot(knockSource.clip);
+            yield return new WaitForSeconds(2f);
 
-        // tv.SpeakSequence();
+            // Knock 2 (mais forte)
+            if (knockSource2 && knockSource2.clip) knockSource2.PlayOneShot(knockSource2.clip);
+            yield return new WaitForSeconds(2f);
+
+            // Knock 3 (super forte)
+            if (knockSource3 && knockSource3.clip) knockSource3.PlayOneShot(knockSource3.clip);
+            yield return new WaitForSeconds(2f);
+            // Pausa antes de repetir o padrão
+            yield return new WaitForSeconds(2f);
+
+            // Se o jogador levantou, o while vai terminar naturalmente na próxima verificação
+            // Se quiser quebrar imediatamente quando levantar:
+            if (sitController != null && !sitController.sitting) break;
+        }
+
+        _knockLoop = null;
     }
 
     

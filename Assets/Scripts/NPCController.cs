@@ -7,6 +7,7 @@ public class NPCController : MonoBehaviour
     public NavMeshAgent agent;
     public Transform targetTV;     // ponto perto da TV
     public Transform exitPoint;    // corredor/porta de saída
+    public DoorHandleController door;
     //public Animator anim;
     public float fixDuration = 3f;
 
@@ -57,6 +58,7 @@ public class NPCController : MonoBehaviour
     {
         // Ir até a TV por waypoints (ou direto se não tiver)
         print("Técnico indo até a TV...");
+        door.isOpen = true;
         if (toTV != null && toTV.points.Count > 0)
             yield return MoveThroughPath(toTV);
         else if (targetTV != null)
@@ -71,6 +73,7 @@ public class NPCController : MonoBehaviour
         print("Técnico saindo...");
         if (toExit != null && toExit.points.Count > 0)
             yield return MoveThroughPath(toExit);
+        door.isOpen = false;
         // else if (exitPoint != null)
         //     yield return MoveTo(exitPoint.position);
 

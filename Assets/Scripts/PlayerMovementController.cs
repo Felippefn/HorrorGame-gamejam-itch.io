@@ -52,18 +52,18 @@ public class PlayerMovemetController : MonoBehaviour
         float curSpeedY = (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal");
 
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+        moveDirection.y = 0f;
 
         characterController.Move(moveDirection * Time.deltaTime);
+
     }
 
     void HandleCamera()
     {
-        // rotação da câmera (sempre disponível)
         rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
 
-        // rotação do corpo com o mouse
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
     }
 }
