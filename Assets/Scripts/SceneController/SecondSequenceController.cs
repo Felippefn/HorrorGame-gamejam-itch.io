@@ -84,6 +84,8 @@ public class SecondSequenceController : MonoBehaviour
 
     IEnumerator RunSecondStage()
     {
+        yield return new WaitForSeconds(6.5f);    
+
         // Delay aleatório antes da descarga
         float t = Random.Range(flushDelayMin, flushDelayMax);
         yield return new WaitForSeconds(t);
@@ -95,6 +97,10 @@ public class SecondSequenceController : MonoBehaviour
             flushSource.PlayOneShot(flushSource.clip);
 
         yield return new WaitForSeconds(1f);
+        if (tv && tv.CheckBathroomAudioSource && tv.CheckBathroomAudioSource.clip)
+            tv.CheckBathroomAudioSource.PlayOneShot(tv.CheckBathroomAudioSource.clip);
+
+        if (tv) tv.WrapperStartDialog(tv.CheckBathroomDialog);
 
         bgCreepySource.PlayOneShot(bgCreepySource.clip);
         // Agora só esperamos o player olhar (LookAtWatcher chama OnPlayerLooked)

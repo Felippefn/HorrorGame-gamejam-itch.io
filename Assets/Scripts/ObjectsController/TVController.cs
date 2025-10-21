@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
+using Microsoft.Unity.VisualStudio.Editor;
 
 public class TVController : MonoBehaviour
 {
@@ -29,11 +30,10 @@ public class TVController : MonoBehaviour
     [Header("Dialog References / UI")]
     public TextMeshProUGUI WaitDialog;
     public AudioSource WaitAudioSource;
-
+    public GameObject TVContentImage;
 
     public TextMeshProUGUI DoNotOpenDialog;
-    public AudioSource DoNotAudioSource;
-
+    //public AudioSource DoNotAudioSource;
 
     public TextMeshProUGUI TimeToExplainDialog;
     public AudioSource TimeToExplainAudioSource;
@@ -47,6 +47,8 @@ public class TVController : MonoBehaviour
     {
         powerIndicatorUI.gameObject.SetActive(false);
         brokenIndicatorUI.gameObject.SetActive(false);
+        TVContentImage.gameObject.SetActive(false);
+
 
         if (WaitDialog)
             WaitDialog.gameObject.SetActive(false);
@@ -56,6 +58,11 @@ public class TVController : MonoBehaviour
             TimeToExplainDialog.gameObject.SetActive(false);
         if (CheckBathroomDialog)
             CheckBathroomDialog.gameObject.SetActive(false);
+    }
+
+    public void WrapperStartDialog(TextMeshProUGUI textMesh)
+    {
+        StartCoroutine(StartDialog(textMesh));
     }
 
     IEnumerator StartDialog(TextMeshProUGUI textMesh)
@@ -135,12 +142,14 @@ public class TVController : MonoBehaviour
 
     IEnumerator PlayWarningLine()
     {
+        WaitAudioSource.PlayOneShot(WaitAudioSource.clip);
         StartCoroutine(StartDialog(WaitDialog));
         yield return new WaitForSeconds(1f);
         StartCoroutine(StartDialog(DoNotOpenDialog));
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3.5f);
         firstSequenceController.WrapperStartDialog(firstSequenceController.playerQuestioningTV);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
+        TimeToExplainAudioSource.PlayOneShot(TimeToExplainAudioSource.clip);
         StartCoroutine(StartDialog(TimeToExplainDialog));
 
 

@@ -240,7 +240,7 @@ void Update()
         //tv.SetBroken(fixedDone);
 
         tech.OnFixed -= onFixed;
-
+        tv.TVContentImage.gameObject.SetActive(true);
         tv.SetPower(true);
         StartCoroutine(StartDialog(playerWantsSofa));
         yield return new WaitForSeconds(4f);
