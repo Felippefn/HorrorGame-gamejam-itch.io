@@ -9,6 +9,7 @@ public class EndScreen : MonoBehaviour
     [Header("UI References")]
     public Image blackImage;                 // Image preta full screen
     public TextMeshProUGUI continueText;     // “CONTINUA…”
+    public TextMeshProUGUI laughtText;          // texto de fim (opcional)
     public AudioSource laughTV;              // som opcional de fundo
 
     [Header("Settings")]
@@ -31,6 +32,7 @@ public class EndScreen : MonoBehaviour
 
         blackImage.gameObject.SetActive(false);
         continueText.gameObject.SetActive(false);
+        laughtText.gameObject.SetActive(false);
     }
 
     public void PlayEnd()
@@ -41,12 +43,12 @@ public class EndScreen : MonoBehaviour
 
     IEnumerator FadeEnd()
     {
-        float startVol = AudioListener.volume;
+        //float startVol = AudioListener.volume;
         float t = 0f;
 
         // toca risada da TV se tiver
-        if (laughTV && laughTV.clip)
-            laughTV.Play();
+        print("Tocando risada da TV...");
+        laughTV.Play();
 
         // Fade in da imagem preta
         while (t < fadeTime)
@@ -61,7 +63,7 @@ public class EndScreen : MonoBehaviour
                 blackImage.color = c;
             }
 
-            AudioListener.volume = Mathf.Lerp(startVol, 0f, a);
+            //AudioListener.volume = Mathf.Lerp(startVol, 0f, a);
             yield return null;
         }
 
@@ -72,10 +74,11 @@ public class EndScreen : MonoBehaviour
             c.a = 1f;
             blackImage.color = c;
         }
-        AudioListener.volume = 0f;
+        //AudioListener.volume = 0f;
 
         // mostra o texto "CONTINUA..."
         if (continueText) continueText.gameObject.SetActive(true);
+        if (laughtText) laughtText.gameObject.SetActive(true);
 
         // espera o input do jogador
         if (waitForAnyKey)
@@ -83,6 +86,8 @@ public class EndScreen : MonoBehaviour
             while (!Input.anyKeyDown)
                 yield return null;
         }
+        //AudioListener.volume = Mathf.Lerp(startVol, 0f, 2f);        
+        yield return new WaitForSeconds(1f);
 
         Next();
     }

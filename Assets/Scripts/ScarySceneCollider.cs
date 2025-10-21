@@ -49,7 +49,7 @@ public class ScarySceneCollider : MonoBehaviour
 
     [Header("Behavior While Waiting")]
     public bool facePlayerContinuously = true; // inimigo fica encarando o player enquanto “stuck”
-
+    public AudioSource laughTV; 
     void Reset()
     {
         var col = GetComponent<Collider>();
@@ -173,6 +173,7 @@ public class ScarySceneCollider : MonoBehaviour
             endScreen.PlayEnd();
             yield return new WaitForSeconds(enemyJumpScareSource.clip.length * 0.9f);
 
+        laughTV.Play();
         Debug.Log(">> FIM DE JOGO POR CENA MASTER <<");
     }
 
