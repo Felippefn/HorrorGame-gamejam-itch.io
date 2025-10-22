@@ -11,6 +11,18 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 *.log
+Build V1.0
+Build V1.1
+Build V1.2
+Build V1.3
+Build V1.4
+
+.zip
+Build V1.0.zip
+Build V1.1.zip
+Build V1.2.zip
+Build V1.3.zip
+Build V1.4.zip
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
