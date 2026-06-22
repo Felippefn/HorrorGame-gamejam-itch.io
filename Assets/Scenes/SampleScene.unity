@@ -20,12 +20,12 @@ RenderSettings:
   m_FogDensity: 0.12
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0, g: 0, b: 0, a: 1}
-  m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
-  m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
+  m_AmbientSkyColor: {r: 0.3301887, g: 0.2530586, b: 0, a: 1}
+  m_AmbientEquatorColor: {r: 0.05660379, g: 0.05660379, b: 0.05660379, a: 1}
+  m_AmbientGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_AmbientIntensity: 0.23
-  m_AmbientMode: 3
-  m_SubtractiveShadowColor: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}
+  m_AmbientMode: 1
+  m_SubtractiveShadowColor: {r: 0.103773594, g: 0.103773594, b: 0.103773594, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -853,7 +853,7 @@ MonoBehaviour:
   teleportDelay: 0.35
   enemyJumpScareSource: {fileID: 559225739}
   player: {fileID: 624484712}
-  pmc: {fileID: 624484710}
+  pmc: {fileID: 0}
   modelYawOffset: 90
   faceSpeed: 10
   scarySound: {fileID: 1121814564}
@@ -9868,11 +9868,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 330585545}
-  walkSpeed: 2.5
-  runSpeed: 3
-  lookSpeed: 1
-  lookXLimit: 55
-  canMove: 1
 --- !u!143 &624484711
 CharacterController:
   m_ObjectHideFlags: 0
